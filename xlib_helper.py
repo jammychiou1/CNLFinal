@@ -24,6 +24,23 @@ so_get_box.argtypes = [Display_p, Window, POINTER(c_int), POINTER(c_int), POINTE
 dpy = Display_p()
 window = Window()
 
+def is_key_allow(key):
+    return True
+
+def keyboard_down(key):
+    if not is_key_allow(key):
+        print(f'error: the key {key} is not allowed')
+    else:
+        print('keyboard_down', key)
+        so_press(dpy, window, c_char_p(key.encode('utf-8')))
+
+def keyboard_up(key):
+    if not is_key_allow(key):
+        print(f'error: the key {key} is not allowed')
+    else:
+        print('keyboard_up', key)
+        so_release(dpy, window, c_char_p(key.encode('utf-8')))
+
 def init():
     #print('initing')
     so_init(byref(dpy), byref(window))

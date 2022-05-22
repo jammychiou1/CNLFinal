@@ -82,6 +82,15 @@ async def offer(request):
     pc = RTCPeerConnection()
     pcs.add(pc)
 
+    @pc.on("datachannel")
+    def on_datachannel(channel):
+        @channel.on("message")
+        def on_message(message):
+            if isinstance(message, str) and message.startswith("keydown"):
+                xlib_helper.keyboard_down(message[7:])
+            elif isinstance(message, str) and message.startswith("keyup"):
+                xlib_helper.keyboard_up(message[5:])
+
     @pc.on("connectionstatechange")
     async def on_connectionstatechange():
         print("Connection state is %s" % pc.connectionState)

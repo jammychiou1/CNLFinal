@@ -1,5 +1,8 @@
 var pc = null;
 
+// data channel
+var dc = null;
+
 function negotiate() {
     pc.addTransceiver('video', {direction: 'recvonly'});
     pc.addTransceiver('audio', {direction: 'recvonly'});
@@ -61,6 +64,27 @@ function start() {
         }
     });
 
+    if (document.getElementById('use-datachannel').checked) {
+        var parameters = JSON.parse(document.getElementById('datachannel-parameters').value);
+
+        dc = pc.createDataChannel('keyboard', parameters);
+        let keys = ['W', 'A', 'S', 'D', 'B', 'V'];
+        document.onkeydown = function(e) {
+            keys.forEach(function(key, i){
+                if (e.which == key.charCodeAt(0)) {
+                    dc.send('keydown' + key);
+                }
+            });
+        };
+        document.onkeyup = function(e) {
+            keys.forEach(function(key, i){
+                if (e.which == key.charCodeAt(0)) {
+                    dc.send('keyup' + key);
+                }
+            });
+        };
+    }
+
     document.getElementById('start').style.display = 'none';
     negotiate();
     document.getElementById('stop').style.display = 'inline-block';
@@ -68,6 +92,11 @@ function start() {
 
 function stop() {
     document.getElementById('stop').style.display = 'none';
+
+    // close data channel
+    if (dc) {
+        dc.close();
+    }
 
     // close peer connection
     setTimeout(function() {
