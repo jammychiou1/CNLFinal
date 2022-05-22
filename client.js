@@ -69,16 +69,16 @@ function start() {
 
         dc = pc.createDataChannel('keyboard', parameters);
         // player1
-        //let keyMap = new Map([ 
-        //    ['W', 'W'],
-        //    ['A', 'A'],
-        //    ['S', 'S'],
-        //    ['D', 'D'],
-        //    ['B', 'B'],
-        //    ['V', 'V']
-        //]);
+        let keyMap1 = new Map([ 
+            ['w', 'W'],
+            ['a', 'A'],
+            ['s', 'S'],
+            ['d', 'D'],
+            ['b', 'B'],
+            ['v', 'V']
+        ]);
         // player2
-        let keyMap = new Map([ 
+        let keyMap2 = new Map([ 
             ['ArrowLeft', 'Left'],
             ['ArrowRight', 'Right'],
             ['ArrowUp', 'Up'],
@@ -86,7 +86,9 @@ function start() {
             ['.', 'period'],
             [',', 'comma']
         ]);
+        let keyMap = document.getElementById('player-id').value == '1' ? keyMap1 : keyMap2;
         document.onkeydown = function(e) {
+            console.log(e.key);
             if (keyMap.has(e.key)) {
                 dc.send('keydown' + keyMap.get(e.key));
             }
@@ -97,6 +99,8 @@ function start() {
             }
         };
     }
+    document.getElementById('player-id').style.display = 'none';
+    document.getElementById('player-id-label').style.display = 'none';
 
     document.getElementById('start').style.display = 'none';
     negotiate();
