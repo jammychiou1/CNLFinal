@@ -68,20 +68,33 @@ function start() {
         var parameters = JSON.parse(document.getElementById('datachannel-parameters').value);
 
         dc = pc.createDataChannel('keyboard', parameters);
-        let keys = ['W', 'A', 'S', 'D', 'B', 'V'];
+        // player1
+        //let keyMap = new Map([ 
+        //    ['W', 'W'],
+        //    ['A', 'A'],
+        //    ['S', 'S'],
+        //    ['D', 'D'],
+        //    ['B', 'B'],
+        //    ['V', 'V']
+        //]);
+        // player2
+        let keyMap = new Map([ 
+            ['ArrowLeft', 'Left'],
+            ['ArrowRight', 'Right'],
+            ['ArrowUp', 'Up'],
+            ['ArrowDown', 'Down'],
+            ['.', 'period'],
+            [',', 'comma']
+        ]);
         document.onkeydown = function(e) {
-            keys.forEach(function(key, i){
-                if (e.which == key.charCodeAt(0)) {
-                    dc.send('keydown' + key);
-                }
-            });
+            if (keyMap.has(e.key)) {
+                dc.send('keydown' + keyMap.get(e.key));
+            }
         };
         document.onkeyup = function(e) {
-            keys.forEach(function(key, i){
-                if (e.which == key.charCodeAt(0)) {
-                    dc.send('keyup' + key);
-                }
-            });
+            if (keyMap.has(e.key)) {
+                dc.send('keyup' + keyMap.get(e.key));
+            }
         };
     }
 
