@@ -31,14 +31,14 @@ def keyboard_down(key):
     if not is_key_allow(key):
         print(f'error: the key {key} is not allowed')
     else:
-        print('keyboard_down', key)
+        #print('keyboard_down', key)
         so_press(dpy, window, c_char_p(key.encode('utf-8')))
 
 def keyboard_up(key):
     if not is_key_allow(key):
         print(f'error: the key {key} is not allowed')
     else:
-        print('keyboard_up', key)
+        #print('keyboard_up', key)
         so_release(dpy, window, c_char_p(key.encode('utf-8')))
 
 def init():
